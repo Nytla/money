@@ -1,0 +1,16 @@
+.next
+node_modules
+coverage
+playwright-report
+test-results
+package-lock.json
+src/generated
+prisma/migrations
+docs/*.xlsx
+
+# Установленные извне скиллы: не форматируем чужое, иначе ломаются диффы при skills update
+.agents
+.claude/skills/impeccable
+.claude/skills/vercel-*
+.claude/skills/accelint-*
+.claude/skills/playwright-best-practices

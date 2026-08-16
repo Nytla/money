@@ -1,0 +1,69 @@
+// Модель данных сервиса учёта доходов/расходов.
+// Переезд на Postgres: сменить provider и DATABASE_URL, схема совместима.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// Личный сервис: в таблице всегда ровно одна запись.
+model User {
+  id               String   @id @default(cuid())
+  passwordHash     String
+  /// Инкрементируется при смене пароля — инвалидирует выданные ранее сессии.
+  sessionVersion   Int      @default(1)
+  /// Код валюты ISO 4217, например RUB / USD / EUR.
+  currency         String   @default("RUB")
+  /// Процент десятины от дохода за период.
+  tithePercent     Int      @default(10)
+  /// Переносить ли остаток предыдущего месяца в следующий.
+  carryOverBalance Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+enum EntryKind {
+  INCOME
+  EXPENSE
+}
+
+model Category {
+  id        String        @id @default(cuid())
+  name      String
+  kind      EntryKind
+  /// Имя пресет-иконки из lucide-react.
+  iconKey   String?
+  /// Загруженная пользователем иконка как data URL (<= 128px, <= 64 КБ).
+  iconData  String?
+  color     String        @default("#64748b")
+  /// Системные категории нельзя удалить (например, «Десятина»).
+  isSystem  Boolean       @default(false)
+  sortOrder Int           @default(0)
+  createdAt DateTime      @default(now())
+  entries   Transaction[]
+
+  @@unique([name, kind])
+  @@index([kind, sortOrder])
+}
+
+model Transaction {
+  id   String    @id @default(cuid())
+  /// Календарный день операции, время всегда 00:00 UTC.
+  date DateTime
+  kind EntryKind
+  /// Сумма в минорных единицах (копейки/центы) — деньги не хранятся во Float.
+  amountMinor Int
+  note        String?
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([date])
+  @@index([kind, date])
+  @@index([categoryId])
+}

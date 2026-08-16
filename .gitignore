@@ -40,9 +40,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# database (SQLite)
+# database (SQLite): файлы БД и её временные спутники живут в db/
+/db/*
+!/db/.gitkeep
 *.db
 *.db-journal
+*.db-wal
+*.db-shm
 
 # prisma generated client
 /src/generated

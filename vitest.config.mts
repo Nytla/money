@@ -8,6 +8,9 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./tests/setup.ts"],
+    globalSetup: ["./tests/db/global-setup.ts"],
+    // Тесты делят один файл БД, поэтому файлы тестов не должны идти параллельно.
+    fileParallelism: false,
     // E2E-спеки гоняет Playwright, не Vitest.
     include: ["src/**/*.test.{ts,tsx}", "tests/unit/**/*.test.{ts,tsx}"],
     coverage: {

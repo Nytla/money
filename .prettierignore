@@ -8,6 +8,9 @@ src/generated
 prisma/migrations
 docs/*.xlsx
 
+# Кеш детектора impeccable
+.impeccable
+
 # Установленные извне скиллы: не форматируем чужое, иначе ломаются диффы при skills update
 .agents
 .claude/skills/impeccable

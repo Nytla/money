@@ -1,24 +1,33 @@
 import { defineConfig, devices } from "@playwright/test";
+import { E2E_DATABASE_URL } from "./tests/e2e/global-setup";
 
-const PORT = 3000;
+const PORT = 3100;
 const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  fullyParallel: true,
+  // Сценарии пишут в общую базу, поэтому идут последовательно.
+  fullyParallel: false,
+  workers: 1,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
   reporter: "html",
+  globalSetup: "./tests/e2e/global-setup.ts",
   use: {
     baseURL,
     trace: "on-first-retry",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    command: "npm run dev",
+    // Порт отличается от дев-сервера: E2E не должны цепляться к запущенному вручную
+    // серверу, который смотрит в рабочую базу.
+    command: `npx next dev --port ${PORT}`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     timeout: 120_000,
+    env: { DATABASE_URL: E2E_DATABASE_URL },
+    // Обычные логи запросов заглушены, ошибки сервера — видны.
+    stdout: "ignore",
+    stderr: "pipe",
   },
 });

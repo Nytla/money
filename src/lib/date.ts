@@ -67,6 +67,19 @@ export function todayCalendarDay(now: Date = new Date()): Date {
   return calendarDay(now.getFullYear(), now.getMonth() + 1, now.getDate());
 }
 
+/**
+ * Полуинтервал календарного месяца: `from` включительно, `toExclusive` — нет.
+ * Полуинтервал вместо «последнего дня месяца» избавляет от разбора 28/29/30/31.
+ */
+export function monthRange(year: number, month: number): { from: Date; toExclusive: Date } {
+  return { from: calendarDay(year, month, 1), toExclusive: calendarDay(year, month + 1, 1) };
+}
+
+/** Месяц, в котором находится указанный день, по локальному календарю. */
+export function currentMonthRange(now: Date = new Date()): { from: Date; toExclusive: Date } {
+  return monthRange(now.getFullYear(), now.getMonth() + 1);
+}
+
 /** «01.08.2026» — формат столбца «Дата». */
 export function formatDate(date: Date): string {
   const day = String(date.getUTCDate()).padStart(2, "0");

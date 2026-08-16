@@ -18,6 +18,10 @@ const eslintConfig = defineConfig([
     "playwright-report/**",
     "test-results/**",
     "src/generated/**",
+    // Установленные извне скиллы: чужой код, свои правила к нему не применяем.
+    ".agents/**",
+    ".claude/**",
+    ".impeccable/**",
   ]),
 ]);
 

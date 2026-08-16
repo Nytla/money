@@ -21,6 +21,19 @@ export function encodeSecret(secret: string): Uint8Array {
   return new TextEncoder().encode(secret);
 }
 
+/**
+ * Подпись токена ещё не значит, что сессия жива: после смены пароля версия
+ * у пользователя растёт, и старые токены перестают ей соответствовать.
+ */
+export function sessionMatchesUser(
+  payload: SessionPayload | null,
+  user: { id: string; sessionVersion: number } | null,
+): boolean {
+  if (!payload || !user) return false;
+
+  return payload.uid === user.id && payload.v === user.sessionVersion;
+}
+
 export async function createSessionToken(
   payload: SessionPayload,
   secret: Uint8Array,

@@ -3,6 +3,7 @@ import { currentMonthRange, formatDate, formatMonthYear, todayCalendarDay } from
 import { buildJournal } from "@/lib/journal";
 import { formatMoney, type CurrencyCode } from "@/lib/money";
 import { prisma } from "@/lib/prisma";
+import { AccountMenu } from "./account-menu";
 import { TransactionDialog } from "./transaction-dialog";
 
 export default async function JournalPage() {
@@ -40,7 +41,7 @@ export default async function JournalPage() {
       <header className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-semibold">Журнал за {formatMonthYear(from)}</h1>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <TransactionDialog
             kind="INCOME"
             categories={categories}
@@ -51,6 +52,8 @@ export default async function JournalPage() {
             categories={categories}
             today={formatDate(todayCalendarDay())}
           />
+          <span className="mx-1 hidden h-6 w-px bg-black/15 sm:block dark:bg-white/20" />
+          <AccountMenu />
         </div>
       </header>
 

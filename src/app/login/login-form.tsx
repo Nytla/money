@@ -1,12 +1,11 @@
 "use client";
 
 import { useActionState } from "react";
-import { login, type LoginState } from "./actions";
-
-const initialState: LoginState = { error: null };
+import { login } from "./actions";
+import { emptyLoginState } from "./login-state";
 
 export function LoginForm() {
-  const [state, formAction, pending] = useActionState(login, initialState);
+  const [state, formAction, pending] = useActionState(login, emptyLoginState);
 
   return (
     <form action={formAction} className="flex w-full max-w-sm flex-col gap-4">

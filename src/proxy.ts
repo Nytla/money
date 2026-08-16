@@ -20,10 +20,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (session && isLoginRoute) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
+  // Обратного правила «есть подпись — уводим с /login» здесь намеренно нет.
+  // Подпись может быть верной у токена с устаревшей версией сессии: тогда proxy
+  // пускал бы на «/», страница по данным понимала бы, что сессия мертва, слала бы
+  // на «/login», а proxy возвращал бы обратно — бесконечная петля. Решение о том,
+  // что пользователь уже вошёл, принимает только страница входа, у которой есть БД.
   return NextResponse.next();
 }
 

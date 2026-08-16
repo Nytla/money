@@ -9,6 +9,7 @@ import {
   SESSION_TTL_SECONDS,
   createSessionToken,
   encodeSecret,
+  sessionMatchesUser,
   verifySessionToken,
 } from "@/lib/session";
 
@@ -32,7 +33,7 @@ export async function getCurrentUser() {
   if (!payload) return null;
 
   const user = await prisma.user.findUnique({ where: { id: payload.uid } });
-  if (!user || user.sessionVersion !== payload.v) return null;
+  if (!sessionMatchesUser(payload, user)) return null;
 
   return user;
 }

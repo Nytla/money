@@ -27,17 +27,34 @@
  - суть раздела статистика такова, выбрать Категорию, период и построить наглядную стасистику по данной категории за выбранный период.
 6. Проект у нас на Next.js так как проект будем использовать локально можем взять Mysqlite, разработка и тестирование проекта будет в соответствии с файлом testing-cycle.xlsx;
 7. Готовым сначала полный план разработки и тестирования проекта, готовим под это модули и скиллы и запускаем работу.
-8. Скилы для разработки:
-- issues [for git - create issues] - Установлено
-- plan-phase [for prd] - Установлено
-- prd [Product Requirements Document] - Установлено
-- read [for reading file optimal (search line) - minimum use tokens] - Установлено
-- git-commit - Установлено
+8. Скилы для разработки (факт на 16.08.2026, все установлены):
+Цепочка фазы A — prd -> decompose -> plan-phase -> issues:
+- prd [Product Requirements Document] - что и зачем
+- decompose - дробление на атомарные задачи (свой скилл, написан под проект)
+- plan-phase - сборка задач в фазы, порядок и зависимости
+- issues [gh CLI] - выгрузка плана в github, требует gh auth login
+Разработка и тестирование:
+- read - экономное чтение файлов (переписан под PowerShell)
+- git-commit - коммиты по Conventional Commits
+- test-cycle - прогон регламента testing-cycle.xlsx (свой скилл)
+- db-fixtures - изолированная тестовая БД для Prisma (свой скилл)
 - vercel-react-best-practices [https://github.com/vercel-labs/agent-skills]
-- accelint-nextjs-best-practices [https://github.com/gohypergiant/agent-skills]
-- requesting-code-review [https://github.com/obra/superpowers]
-- impeccable [https://github.com/pbakaus/impeccable]
+- accelint-react-testing [https://github.com/gohypergiant/agent-skills]
+- accelint-ts-testing [https://github.com/gohypergiant/agent-skills]
 - playwright-best-practices [https://github.com/currents-dev/playwright-best-practices-skill]
+- impeccable [https://github.com/pbakaus/impeccable]
+
+Отклонения от первоначального списка и причины:
+- atomic-decomposition - НЕ взят: это скилл для декомпозиции научных статей на
+  формулы и код, к продуктовым задачам отношения не имеет. Вместо него написан
+  свой скилл decompose.
+- accelint-nextjs-best-practices - НЕ взят: на 70% дублирует
+  vercel-react-best-practices. Два конкурирующих источника по одному предмету
+  хуже одного. Из того же репозитория взяты скиллы тестирования, которых
+  не было в списке и которые закрывают проверки 2-3 регламента.
+- requesting-code-review (superpowers) - НЕ взят: это плагин-методология из 13
+  скиллов, половина дублирует prd и plan-phase, а ревью кода уже есть встроенное
+  (/code-review, /security-review).
 - И давай установим git для этого проекта, я тебе дам имя репозитория и ключ, а ты сам будешь делать issues,  precommit и всё что нужно для тестировая;
 9. 1-й этапом - это будет создание задания на разработку продукта по правилам декомпозиции и создание issues, для этого берём скилл:
  - atomic-decomposition [https://github.com/lingzhi227/agent-research-skills/tree/main/skills] Что скажешь, можем что-то взять полезное ?
